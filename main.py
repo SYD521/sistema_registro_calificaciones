@@ -2,32 +2,28 @@ import os
 
 ARCHIVO = "notas.txt"
 
+def validar_datos(nombre, nota1, nota2, nota3):
+    return nombre != "" and nota1 >= 0 and nota2 >= 0 and nota3 >= 0
+
+def calcular_promedio(nota1, nota2, nota3):
+    return (nota1 + nota2 + nota3) / 3
+
+def determinar_estado(promedio):
+    return "APROBADO" if promedio >= 7 else "REPROBADO"
+
+def guardar_registro(nombre, nota1, nota2, nota3, promedio, estado):
+    with open(ARCHIVO, "a") as archivo:
+        archivo.write(
+            f"{nombre},{nota1},{nota2},{nota3},{promedio},{estado}\n"
+        )
+    print("Registro guardado")
+
 def registrar_calificacion(nombre, nota1, nota2, nota3):
 
-    if nombre != "" and nota1 >= 0 and nota2 >= 0 and nota3 >= 0:
-        
-        promedio = (nota1 + nota2 + nota3) / 3
-
-        if promedio >= 7:
-            estado = "APROBADO"
-        else:
-            estado = "REPROBADO"
-
-        archivo = open(ARCHIVO, "a")
-
-        archivo.write(
-            nombre + "," +
-            str(nota1) + "," +
-            str(nota2) + "," +
-            str(nota3) + "," +
-            str(promedio) + "," +
-            estado + "\n"
-        )
-
-        archivo.close()
-
-        print("Registro guardado")
-
+    if validar_datos(nombre, nota1, nota2, nota3):
+        promedio = calcular_promedio(nota1, nota2, nota3)
+        estado = determinar_estado(promedio)
+        guardar_registro(nombre, nota1, nota2, nota3, promedio, estado)
     else:
         print("Datos incorrectos")
 
@@ -35,23 +31,21 @@ def listar_registros():
 
     if os.path.exists(ARCHIVO):
 
-        archivo = open(ARCHIVO)
+        with open(ARCHIVO) as archivo:
 
-        print("-" * 70)
-        for linea in archivo:
+            print("-" * 70)
+            for linea in archivo:
 
-            datos = linea.strip().split(",")
+                datos = linea.strip().split(",")
 
-            print(
-                datos[0],
-                datos[1],
-                datos[2],
-                datos[3],
-                datos[4],
-                datos[5]
-            )
-
-        archivo.close()
+                print(
+                    datos[0],
+                    datos[1],
+                    datos[2],
+                    datos[3],
+                    datos[4],
+                    datos[5]
+                )
 
     else:
         print("No existen registros")
@@ -73,8 +67,6 @@ def generar_reporte():
                 aprobados += 1
             else:
                 reprobados += 1
-
-        archivo.close()
 
         print("Aprobados:", aprobados)
         print("Reprobados:", reprobados)
