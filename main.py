@@ -42,14 +42,14 @@ def listar_registros():
         return
 
     print("-" * 70)
-    for datos in registros:
+    for nombre, nota1, nota2, nota3, promedio, estado in registros:
         print(
-            datos[0],
-            datos[1],
-            datos[2],
-            datos[3],
-            datos[4],
-            datos[5]
+            nombre,
+            nota1,
+            nota2,
+            nota3,
+            promedio,
+            estado
         )
 
 def generar_reporte():
@@ -59,8 +59,8 @@ def generar_reporte():
         aprobados = 0
         reprobados = 0
 
-        for datos in registros:
-            if datos[5] == "APROBADO":
+        for nombre, nota1, nota2, nota3, promedio, estado in registros:
+            if estado == "APROBADO":
                 aprobados += 1
             else:
                 reprobados += 1
