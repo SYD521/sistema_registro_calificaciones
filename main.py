@@ -27,42 +27,39 @@ def registrar_calificacion(nombre, nota1, nota2, nota3):
     else:
         print("Datos incorrectos")
 
+def leer_registros():
+    if not os.path.exists(ARCHIVO):
+        return []
+    with open(ARCHIVO, "r") as archivo:
+        registros = [linea.strip().split(",") for linea in archivo]
+    return registros
+
 def listar_registros():
 
-    if os.path.exists(ARCHIVO):
-
-        with open(ARCHIVO) as archivo:
-
-            print("-" * 70)
-            for linea in archivo:
-
-                datos = linea.strip().split(",")
-
-                print(
-                    datos[0],
-                    datos[1],
-                    datos[2],
-                    datos[3],
-                    datos[4],
-                    datos[5]
-                )
-
-    else:
+    registros = leer_registros()
+    if not registros:
         print("No existen registros")
+        return
+
+    print("-" * 70)
+    for datos in registros:
+        print(
+            datos[0],
+            datos[1],
+            datos[2],
+            datos[3],
+            datos[4],
+            datos[5]
+        )
 
 def generar_reporte():
 
-    if os.path.exists(ARCHIVO):
-
-        archivo = open(ARCHIVO)
-
+    registros = leer_registros()
+    if registros:
         aprobados = 0
         reprobados = 0
 
-        for linea in archivo:
-
-            datos = linea.strip().split(",")
-
+        for datos in registros:
             if datos[5] == "APROBADO":
                 aprobados += 1
             else:
